@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Projeto Esig</title>
+	<h:outputStylesheet library="css" name="estilos.css" />
+</h:head>
+<h:body>
+
+	<h:form method="post">
+		<p:panel header="Listagem de Tarefa">
+			<div class="lista">
+
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="Título:" />
+					<p:inputText value="#{tarefaBean.tarefa.titulo}" maxlength="25"
+						size="15" />
+
+					<p:outputLabel value="Descrição:" />
+					<p:inputText value="#{tarefaBean.tarefa.descricao}" maxlength="50"
+						size="50" />
+
+				</h:panelGrid>
+				<br />
+				<h:panelGrid columns="6">
+					<p:outputLabel value="Responsável:" />
+					<p:selectOneMenu value="#{tarefaBean.tarefa.responsavel}">
+						<f:selectItem itemValue="Fulano" itemLabel="Fulano" />
+						<f:selectItem itemValue="Ciclano" itemLabel="Ciclano" />
+						<f:selectItem itemValue="Beltrano" itemLabel="Beltrano" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Situação:" />
+					<p:selectOneMenu value="#{tarefaBean.tarefa.situacao}">
+						<f:selectItem itemValue="Em Andamento" itemLabel="Em Andamento" />
+						<f:selectItem itemValue="Finalizado" itemLabel="Finalizado" />
+					</p:selectOneMenu>
+
+					<h:commandButton value="Buscar Tarefas"	action="#{tarefaBean.listar}" ajax="false" update="@form" />
+					<p:linkButton value="Voltar" outcome="formulario.xhtml"></p:linkButton>
+
+				</h:panelGrid>
+				<br />
+			</div>
+			<div class="listaTarefa">
+				<p:dataTable var="tarefa" value="#{tarefaBean.tarefas}" emptyMessage="Sem registros de tarefas">
+					<p:column headerText="Número">
+						<h:outputText value="#{tarefa.id}" />
+					</p:column>
+					<p:column headerText="Título">
+						<h:outputText value="#{tarefa.titulo}" />
+					</p:column>
+
+					<p:column headerText="Descrição">
+						<h:outputText value="#{tarefa.descricao}" />
+					</p:column>
+
+					<p:column headerText="Responsável">
+						<h:outputText value="#{tarefa.responsavel}" />
+					</p:column>
+					<p:column headerText="Data de Prazo">
+						<h:outputText value="#{tarefa.prazoFinal}" />
+					</p:column>
+					<p:column headerText="Situação">
+						<h:outputText value="#{tarefa.situacao}" />
+					</p:column>
+
+					<p:column headerText="Ações">
+						<h:commandButton value="Editar" action="#{tarefaBean.editar(tarefa)}" update="@form" />
+						<h:commandButton value="Excluir" action="#{tarefaBean.deletar(tarefa)}" update="@all" />
+						<h:commandButton value="Concluir" action="#{tarefaBean.cadastrarTarefa}" update="@form" />
+					</p:column>
+				</p:dataTable>
+			</div>
+		</p:panel>
+	</h:form>
+</h:body>
+</html>
