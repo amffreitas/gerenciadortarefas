@@ -22,7 +22,6 @@ public class TarefaDAO {
 			if (tarefa.getId() == null) {
 				ps = con.prepareCall(
 						"INSERT INTO projetoesig.tarefa (titulo, descricao, responsavel, prioridade, situacao, prazo_final) VALUES (?,?,?,?,?,?) ");
-				ps.setString(5, "Em andamento");
 			} else {
 				ps = con.prepareCall("update projetoesig.tarefa set titulo=?, descricao=?, responsavel=?, prioridade=?, situacao=?, prazo_final=? where id=?");
 				ps.setString(5, tarefa.getSituacao());
@@ -32,6 +31,7 @@ public class TarefaDAO {
 			ps.setString(2, tarefa.getDescricao());
 			ps.setString(3, tarefa.getResponsavel());
 			ps.setInt(4, tarefa.getPrioridade());
+			ps.setString(5, "Em andamento");
 			ps.setDate(6, new Date(tarefa.getPrazoFinal().getTime()));
 			ps.execute();
 			con.close();
@@ -75,7 +75,20 @@ public class TarefaDAO {
 			ps.setLong(1, idTarefa);
 			ps.execute();
 		
-			} catch (Exception e) {
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}
+	
+	public void concluir(Long idTarefa) {
+		try {
+			Connection con = CriarConexao.getConexao();
+			PreparedStatement ps = con.prepareCall("update projetoesig.tarefa set situacao=? where id=?");
+			ps.setString(1, "Finalizado");
+			ps.setLong(2, idTarefa);
+			ps.execute();
+		
+		} catch (Exception e) {
 			e.printStackTrace();
 		} 
 	}

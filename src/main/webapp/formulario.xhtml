@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:decorate xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
-<h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-	<title>Projeto Esig</title>
-	<h:outputStylesheet library="css" name="style.css" />
-</h:head>
-<h:body>
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="template.xhtml">
 
 	<h:form method="post">
 		<p:panel header="Cadastrar Tarefa">
 			<br />
-
 			<h:panelGrid columns="2" layout="flex">
 
 				<p:outputLabel value="Título" />
@@ -28,8 +21,7 @@
 
 			</h:panelGrid>
 			<br />
-
-			<h:panelGrid columns="6" >
+			<h:panelGrid columns="6">
 
 				<p:outputLabel name="responsavel" value="Responsável:" />
 				<p:selectOneMenu value="#{tarefaBean.tarefa.responsavel}">
@@ -44,26 +36,31 @@
 					<f:selectItem itemValue="2" itemLabel="Média" />
 					<f:selectItem itemValue="3" itemLabel="Alta" />
 				</p:selectOneMenu>
-				
-				
-				
+
+				<p:outputLabel name="situacao" value="Situação:" />
+				<p:selectOneMenu value="#{tarefaBean.tarefa.situacao}">
+					<f:selectItem itemValue="Em Andamento" itemLabel="Em Andamento" />
+					<f:selectItem itemValue="Finalizada" itemLabel="Finalizada" />
+				</p:selectOneMenu>
+
 			</h:panelGrid>
 			<br />
-
 			<h:panelGrid columns="2">
 
 				<p:outputLabel value="Prazo Final" />
-				<p:datePicker value="#{tarefaBean.tarefa.prazoFinal}" id="date" showIcon="true" style="width:right" />
-				
-				<h:commandButton value="Cadastrar" action="#{tarefaBean.cadastrarTarefa}" update="@all" ajax="false"/>
-				<p:linkButton value="Lista Tarefa" outcome="listartarefa.xhtml"></p:linkButton>
-			
+				<p:datePicker value="#{tarefaBean.tarefa.prazoFinal}" id="date"
+					showIcon="true" style="width:right" />
+
 			</h:panelGrid>
+
 			<br />
-			
+			<p:commandButton value="Cadastrar"
+				action="#{tarefaBean.cadastrarTarefa}" update="@all" ajax="false" />
+			<br />
+		
 		</p:panel>
 	</h:form>
 
 
-</h:body>
-</html>
+
+</ui:decorate>
