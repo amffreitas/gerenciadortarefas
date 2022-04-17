@@ -12,12 +12,10 @@
 			<h:panelGrid columns="2" layout="flex">
 
 				<p:outputLabel value="Título" />
-				<p:inputText value="#{tarefaBean.tarefa.titulo}" maxlength="48"
-					size="48" />
+				<p:inputText value="#{tarefaBean.tarefa.titulo}" maxlength="48"	size="48" />
 
 				<p:outputLabel value="Descrição:" />
-				<p:inputTextarea value="#{tarefaBean.tarefa.descricao}" cols="50"
-					rows="3" />
+				<p:inputTextarea value="#{tarefaBean.tarefa.descricao}" cols="50" rows="3" />
 
 			</h:panelGrid>
 			<br />
@@ -48,8 +46,7 @@
 			<h:panelGrid columns="2">
 
 				<p:outputLabel value="Prazo Final" />
-				<p:datePicker value="#{tarefaBean.tarefa.prazoFinal}" id="date"
-					showIcon="true" style="width:right" />
+				<p:datePicker value="#{tarefaBean.tarefa.prazoFinal}" id="date"	showIcon="true" style="width:right" />
 
 			</h:panelGrid>
 
@@ -60,7 +57,5 @@
 		
 		</p:panel>
 	</h:form>
-
-
 
 </ui:decorate>
