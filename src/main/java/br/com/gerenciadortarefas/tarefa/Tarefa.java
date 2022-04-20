@@ -21,5 +21,9 @@ public class Tarefa {
 	private String situacao;
 	@Column(name = "prazo_final")	
 	private Date prazoFinal;
+	public void add(Tarefa tarefa) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

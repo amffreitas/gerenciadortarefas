@@ -3,11 +3,9 @@ package br.com.gerenciadortarefas.tarefa;
 
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -19,7 +17,7 @@ import javax.servlet.http.HttpServlet;
 import lombok.Data;
 
 @Data
-@ViewScoped
+@SessionScoped
 @ManagedBean(name = "tarefaBean")
 public class TarefaBean extends HttpServlet {
 	
@@ -28,6 +26,7 @@ public class TarefaBean extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private Tarefa tarefa = new Tarefa();
+	private Long idTarefaFiltro;
 	
 	@PostConstruct
     public void init(){
@@ -37,7 +36,10 @@ public class TarefaBean extends HttpServlet {
 	public String cadastrarTarefa() throws SQLException {
 		
 		tarefaDAO.salvar(this.tarefa);
+		this.tarefa = new Tarefa();
+		listar();
 		return "Tarefa salva com sucesso";
+		
 
 	}
 	
@@ -47,8 +49,10 @@ public class TarefaBean extends HttpServlet {
 	
 	
 	public void editar(Tarefa t) throws IOException {
-		this.tarefa = t;
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		externalContext.redirect("formulario.xhtml");
 		listar();
+		this.tarefa = t;
 	}
 	
 	public void deletar(Tarefa t) {
@@ -61,4 +65,11 @@ public class TarefaBean extends HttpServlet {
 		listar();
 	}
 	
+	public void filtrarPorId() {
+		this.setTarefas(tarefaDAO.filtrarPorId(this.idTarefaFiltro));
+		
+	}
+	
+
 }
+

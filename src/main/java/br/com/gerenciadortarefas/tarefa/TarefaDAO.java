@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.Query;
+import javax.persistence.IdClass;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +16,9 @@ import br.com.gerenciadortarefas.conexao.*;
 
 public class TarefaDAO {
 
+	private String lista;
+	public Object filtrarPorId;
+
 	public void salvar(Tarefa tarefa) throws SQLException {
 		
 		try {
@@ -21,9 +26,9 @@ public class TarefaDAO {
 			PreparedStatement ps;
 			if (tarefa.getId() == null) {
 				ps = con.prepareCall(
-						"INSERT INTO projetoesig.tarefa (titulo, descricao, responsavel, prioridade, situacao, prazo_final) VALUES (?,?,?,?,?,?) ");
+						"INSERT INTO tarefa (titulo, descricao, responsavel, prioridade, situacao, prazo_final) VALUES (?,?,?,?,?,?) ");
 			} else {
-				ps = con.prepareCall("update projetoesig.tarefa set titulo=?, descricao=?, responsavel=?, prioridade=?, situacao=?, prazo_final=? where id=?");
+				ps = con.prepareCall("update tarefa set titulo=?, descricao=?, responsavel=?, prioridade=?, situacao=?, prazo_final=? where id=?");
 				ps.setString(5, tarefa.getSituacao());
 				ps.setLong(7, tarefa.getId());
 			}
@@ -45,7 +50,7 @@ public class TarefaDAO {
 	public List<Tarefa> buscar() {
 		try {
 			Connection con = CriarConexao.getConexao();
-			PreparedStatement ps = con.prepareCall("select * from projetoesig.tarefa");
+			PreparedStatement ps = con.prepareCall("select * from tarefa");
 			ResultSet resultSet = ps.executeQuery();
 			List<Tarefa> tarefas = new ArrayList<>();
 			while (resultSet.next()) {
@@ -71,7 +76,7 @@ public class TarefaDAO {
 	public void deletar(Long idTarefa) {
 		try {
 			Connection con = CriarConexao.getConexao();
-			PreparedStatement ps = con.prepareCall("delete from projetoesig.tarefa where id = ?");
+			PreparedStatement ps = con.prepareCall("delete from tarefa where id = ?");
 			ps.setLong(1, idTarefa);
 			ps.execute();
 		
@@ -83,7 +88,7 @@ public class TarefaDAO {
 	public void concluir(Long idTarefa) {
 		try {
 			Connection con = CriarConexao.getConexao();
-			PreparedStatement ps = con.prepareCall("update projetoesig.tarefa set situacao=? where id=?");
+			PreparedStatement ps = con.prepareCall("update tarefa set situacao=? where id=?");
 			ps.setString(1, "Finalizado");
 			ps.setLong(2, idTarefa);
 			ps.execute();
@@ -91,6 +96,33 @@ public class TarefaDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
+	}
+	
+	public List<Tarefa> filtrarPorId(Long idTarefa) {
+		
+		try {
+			Connection con = CriarConexao.getConexao();
+			PreparedStatement ps = con.prepareCall("select * from tarefa where id=?");
+			ps.setLong(1, idTarefa);
+			ResultSet resultSet = ps.executeQuery();
+			List<Tarefa> tarefas = new ArrayList<>();
+			while (resultSet.next()) {
+				Tarefa tarefa = new Tarefa();
+				tarefa.setId(resultSet.getLong("id"));
+				tarefa.setTitulo(resultSet.getString("titulo"));
+				tarefa.setDescricao(resultSet.getString("descricao"));
+				tarefa.setResponsavel(resultSet.getString("responsavel"));
+				tarefa.setPrioridade(resultSet.getInt("prioridade"));
+				tarefa.setSituacao(resultSet.getString("situacao"));
+				tarefa.setPrazoFinal(resultSet.getDate("prazo_final"));
+				tarefas.add(tarefa);
+			}
+			return tarefas;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }
